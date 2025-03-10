@@ -21,7 +21,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 type MoreOrLessProps = {
-  children: string;
+  children: React.ReactNode;
   containerStyle?: ViewStyle;
   numberOfLines: number;
   onMorePress?: () => void;
