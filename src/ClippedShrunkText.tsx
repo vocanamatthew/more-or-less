@@ -1,5 +1,5 @@
 import { ComponentType, PropsWithChildren, useMemo } from 'react';
-import { Platform, TextLayoutLine, TextProps, TextStyle } from 'react-native';
+import { TextLayoutLine, TextProps, TextStyle } from 'react-native';
 
 type ClippedShrunkTextProps = PropsWithChildren<{
   linesToRender: TextLayoutLine[];
@@ -15,16 +15,6 @@ const ClippedShrunkText = ({
   textComponent: TextComponent,
   textStyle,
 }: ClippedShrunkTextProps) => {
-  const text = useMemo(
-    () =>
-      Platform.select({
-        ios: linesToRender.slice(0, linesToRender.length - 1).map((line) => line.text),
-        android: children,
-        default: children,
-      }),
-    [children, linesToRender]
-  );
-
   const numberOfLinesToClip = useMemo(
     () => Math.min(numberOfLines, linesToRender.length) - 1,
     [linesToRender.length, numberOfLines]
@@ -34,7 +24,7 @@ const ClippedShrunkText = ({
 
   return (
     <TextComponent style={textStyle} numberOfLines={numberOfLinesToClip} ellipsizeMode="clip">
-      {text}
+      {children}
     </TextComponent>
   );
 };
