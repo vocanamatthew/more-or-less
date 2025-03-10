@@ -91,6 +91,15 @@ const MoreOrLess = ({
     [customOnMorePress, expandText, hasMore]
   );
 
+  const renderToString = (node: React.ReactNode): string => {
+    if (typeof node === 'string') return node;
+    if (Array.isArray((node))) return node.map(renderToString).join('');
+    if (React.isValidElement((node))) {
+      return renderToString(node.props.children);
+    }
+    return '';
+  }
+
   if (!children) return null;
 
   // Is rendered for the first time or children changed.
@@ -106,7 +115,7 @@ const MoreOrLess = ({
             numberOfLines={numberOfLines + 1}
             onTextLayout={onTextLayoutGetLines}
           >
-            {children}
+            {typeof children === 'string' ? children : renderToString(children)}
           </TextComponent>
         </View>
       </View>
@@ -138,7 +147,7 @@ const MoreOrLess = ({
             <View style={styles.lastLine}>
               <View style={styles.ellipsedText}>
                 <TextComponent style={textStyle} numberOfLines={1}>
-                  {linesToRender[linesToRender.length - 1].text}
+                  {linesToRender.length > 0 ? linesToRender[linesToRender - 1].text : renderToString(children)}
                 </TextComponent>
               </View>
               {onMorePress && (
